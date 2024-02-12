@@ -1,0 +1,1 @@
+Automatic Text Selection algorithm to select sentences based on their length and the number of rare diphones they present. The algorithm should choose the shortest sentences with the most rare diphones in them.

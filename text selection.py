@@ -1,3 +1,9 @@
+#TO DO
+#Faire une liste avec mes phrases
+#Itérer sur la liste et créer liste de diphone pour chaque phrase
+#itérer sur la nouvelle liste pour trouver les diphones nécessaires
+#et créer un rang par la fréquence d'apparition encore, puis trier avec les phrases les plus efficaces
+
 import nltk
 nltk.download('punkt')
 from nltk.tokenize import sent_tokenize
@@ -91,14 +97,3 @@ for i in needed_diphones:
     needed_sentences = result_dict_diphones.get(i)
 
 print(needed_sentences)
-
-
-
-#Faire une liste avec mes phrases
-#Itérer sur la liste et créer liste de diphone pour chaque phrase
-#itérer sur la nouvelle liste pour trouver les diphones nécessaires
-#et créer un rang par la fréquence d'apparition encore, puis trier avec les phrases les plus efficaces.abs
-
-
-
-

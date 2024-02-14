@@ -1,15 +1,8 @@
-#TO DO
-#Faire une liste avec mes phrases
-#Itérer sur la liste et créer liste de diphone pour chaque phrase
-#itérer sur la nouvelle liste pour trouver les diphones nécessaires
-#et créer un rang par la fréquence d'apparition encore, puis trier avec les phrases les plus efficaces
-
 import nltk
 nltk.download('punkt')
 from nltk.tokenize import sent_tokenize
 import re
 from g2p_en import G2p
-
 
 #############################################
 
@@ -49,10 +42,9 @@ for phone_list in diphones_per_sentence:
                dic_diphones[index] += 1
        else:
                dic_diphones[index] = 1
-#print(dic_diphones)
 
 
-#Sorting the dictionary by frquency value from the highest to the lowest
+#Sorting the dictionary by frequency value from the highest to the lowest
 sorted_dic_diphones = sorted(dic_diphones.items(), key=lambda x:x[1], reverse=True)
 converted_dic_diphones = dict(sorted_dic_diphones)
 
@@ -63,37 +55,63 @@ for key, value in converted_dic_diphones.items():
     if value < 6 :
         needed_diphones.append(key)
 
-#print(len(converted_dic_diphones))
 
 
-#My corpus: diphones (key) aligned with sentences (value). (In a dictionary ?)
-my_corpus = "SCP script.txt"
+
+#My corpus: diphones (key) aligned with sentences (value).
+my_corpus = "Corpus.txt"
 with open(my_corpus) as file:
     corpus = file.read()
 corpus = re.sub("[\n]","",corpus)
-
 
 corpus_sentences = sent_tokenize(corpus)
 corpus_phones = [g2p(sentence) for sentence in corpus_sentences]
 corpus_diphones = [generate_diphones_with_sil(g2p(sentence)) for sentence in corpus_sentences]
 
 
-corpus_diphones_tuples = []
-for x in corpus_diphones:
-    corpus_diphones_tuples.append(tuple(x))
+#Loop to have the indexes of the sentences in which needed_diphones are present
+test = []
+for i in corpus_diphones:
+    for j in i:
+        for k in needed_diphones:
+            if j == k:
+                test.append(corpus_diphones.index(i))
 
 
-result_dict_diphones = dict.fromkeys(corpus_diphones_tuples)
- 
-for key, value in zip(result_dict_diphones.keys(), corpus_sentences):
-    result_dict_diphones[key] = value
- 
-#print(result_dict_diphones)
+#The frequency of needed diphones per sentence indexed 
+needed_diphones_frequency_dict = {}
+for key in test:
+     if key in needed_diphones_frequency_dict:
+        needed_diphones_frequency_dict[key] += 1
+     else:
+          needed_diphones_frequency_dict[key] = 1
 
 
-#Selection: sorting by highest number of needed diphones in shortest sentence (in two steps ?)
+#Sort the dictionary in order to have the index of the sentences with the most needed diphones first
+sorted_needed_diphones_frequency_dict = sorted(needed_diphones_frequency_dict.items(), key=lambda x:x[1], reverse=True)
+converted_needed_diphones_frequency_dict = dict(sorted_needed_diphones_frequency_dict)        
 
-for i in needed_diphones:
-    needed_sentences = result_dict_diphones.get(i)
 
-print(needed_sentences)
+#Create a list with the indexes of the needed sentences
+needed_sentences = []
+for key, value in converted_needed_diphones_frequency_dict.items():
+    if value > 3 :
+        needed_sentences.append(key)
+
+
+#Print the actual sentences to be added to the script, sorted by their length
+def sorting(lst):
+    lst.sort(key=len)
+    return lst
+
+needed_sentences_list = []
+for i in needed_sentences:
+    needed_sentences_list.append(corpus_sentences[i])
+
+sorted_sentences = sorting(needed_sentences_list)
+for i in sorted_sentences:
+    print(i)
+
+
+
+

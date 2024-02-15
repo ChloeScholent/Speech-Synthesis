@@ -6,7 +6,6 @@ from g2p_en import G2p
 
 #############################################
 
-
 arctica_b = "cmuarcticab.data.txt"
 
 with open(arctica_b, 'r') as file:
@@ -25,7 +24,7 @@ g2p = G2p()
 phones = [g2p(sentence) for sentence in sentences]
 
 
-#Generate diphones and adding SIL at the beginning and end of each diphone list
+#Generate diphones and add SIL at the beginning and end of each diphone list
 def generate_diphones_with_sil(phones):
     phones_with_sil = ['SIL'] + phones + ['SIL']
     return [f"{phones_with_sil[i]}-{phones_with_sil[i+1]}" for i in range(len(phones_with_sil)-1)]
@@ -63,6 +62,7 @@ my_corpus = "Corpus.txt"
 with open(my_corpus) as file:
     corpus = file.read()
 corpus = re.sub("[\n]","",corpus)
+corpus = re.sub("[\t]","",corpus)
 
 corpus_sentences = sent_tokenize(corpus)
 corpus_phones = [g2p(sentence) for sentence in corpus_sentences]
@@ -96,10 +96,11 @@ converted_needed_diphones_frequency_dict = dict(sorted_needed_diphones_frequency
 needed_sentences = []
 for key, value in converted_needed_diphones_frequency_dict.items():
     if value > 3 :
-        needed_sentences.append(key)
+        if len(key) < 75:
+            needed_sentences.append(key)
 
 
-#Print the actual sentences to be added to the script, sorted by their length
+#Print the actual sentences to be added to the script, sorted by their length (shorter than 75 characters)
 def sorting(lst):
     lst.sort(key=len)
     return lst
@@ -109,9 +110,8 @@ for i in needed_sentences:
     needed_sentences_list.append(corpus_sentences[i])
 
 sorted_sentences = sorting(needed_sentences_list)
+
 for i in sorted_sentences:
-    print(i)
-
-
-
+    if(len(i)<75):
+        print(i)
 

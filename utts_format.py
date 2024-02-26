@@ -1,3 +1,5 @@
+#Generating the selected sentences in the utts.data format
+
 my_corpus = "My path"
 with open(my_corpus) as file:
     corpus_lines = [line for line in file]

@@ -7,19 +7,20 @@ with open(my_corpus) as file:
 x = 1
 y = "000"
 
-for i in corpus_lines:
-    i = i.replace("\n", "")
+for line in corpus_lines:
+    line = line.replace("\n", "")
 
     if x<10:
-        print(f'( chloe_horror_{y}{x} "{i}" )')
+        print(f'( chloe_horror_{y}{x} "{line}" )')
         x += 1
         
     elif 9<x<100:
         y = "00"
-        print(f'( chloe_horror_{y}{x} "{i}" )')
+        print(f'( chloe_horror_{y}{x} "{line}" )')
         x += 1
-    elif x>99:
+        
+    else:
         y="0"
-        print(f'( chloe_horror_{y}{x} "{i}" )')
+        print(f'( chloe_horror_{y}{x} "{line}" )')
         x += 1
 

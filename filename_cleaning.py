@@ -2,7 +2,7 @@
 
 import os
 
-folder = r'C:\Users\Chloé\Desktop\chloe arctica\\'
+folder = "path_to_file"
 
 for file_name in os.listdir(folder):
     source = folder + file_name
